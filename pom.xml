@@ -4,6 +4,12 @@
 	<groupId>hu.tibor.salagvardi.assignments.xml2</groupId>
 	<artifactId>gemklub-parser</artifactId>
 	<version>1.0</version>
+	<packaging>jar</packaging>
+	<properties>
+		<maven.compiler.source>1.8</maven.compiler.source>
+		<maven.compiler.target>1.8</maven.compiler.target>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	</properties>
 	<dependencies>
 		<dependency>
 			<groupId>org.apache.commons</groupId>
@@ -35,4 +41,34 @@
 		</dependency>
 		
 	</dependencies>
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.6.0</version>
+			</plugin>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>jaxb2-maven-plugin</artifactId>
+				<version>2.3</version>
+				<executions>
+					<execution>
+						<id>schemagen</id>
+						<goals>
+							<goal>schemagen</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<sources>
+						<source>src/main/java/hu/unideb/inf/bd/model/Book.java</source>
+						<source>src/main/java/hu/unideb/inf/bd/model/SearchResultItem.java</source>
+						<source>src/main/java/hu/unideb/inf/bd/model/SearchResults.java</source>
+					</sources>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+	
 </project>
