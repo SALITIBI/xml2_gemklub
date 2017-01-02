@@ -21,9 +21,9 @@ public class Game {
 	@XmlElement
 	private String theme;
 	@XmlElement
-	private double averageRating;
+	private Double averageRating;
 	@XmlElement
-	private int arrivalDateInDays;
+	private Integer arrivalDateInDays;
 	@XmlElement
 	private String shortDescription;
 	@XmlElement
@@ -51,100 +51,137 @@ public class Game {
 	public String getUri() {
 		return uri;
 	}
+
 	public void setUri(String uri) {
 		this.uri = uri;
 	}
+
 	public String getTitle() {
 		return title;
 	}
+
 	public void setTitle(String title) {
 		this.title = title;
 	}
+
 	public String getPublisher() {
 		return publisher;
 	}
+
 	public void setPublisher(String publisher) {
 		this.publisher = publisher;
 	}
+
 	public String getTheme() {
 		return theme;
 	}
+
 	public void setTheme(String theme) {
 		this.theme = theme;
 	}
-	public double getAverageRating() {
+
+	public Double getAverageRating() {
 		return averageRating;
 	}
-	public void setAverageRating(double averageRating) {
+
+	public void setAverageRating(Double averageRating) {
 		this.averageRating = averageRating;
 	}
-	public int getArrivalDateInDays() {
+
+	public Integer getArrivalDateInDays() {
 		return arrivalDateInDays;
 	}
-	public void setArrivalDateInDays(int arrivalDateInDays) {
+
+	public void setArrivalDateInDays(Integer arrivalDateInDays) {
 		this.arrivalDateInDays = arrivalDateInDays;
 	}
+
 	public String getShortDescription() {
 		return shortDescription;
 	}
+
 	public void setShortDescription(String shortDescription) {
 		this.shortDescription = shortDescription;
 	}
+
 	public String getDetailedDescription() {
 		return detailedDescription;
 	}
+
 	public void setDetailedDescription(String detailedDescription) {
 		this.detailedDescription = detailedDescription;
 	}
+
 	public Interval getSuggestedAgeGroup() {
 		return suggestedAgeGroup;
 	}
+
 	public void setSuggestedAgeGroup(Interval suggestedAgeGroup) {
 		this.suggestedAgeGroup = suggestedAgeGroup;
 	}
+
 	public Interval getGameTimeInMinutes() {
 		return gameTimeInMinutes;
 	}
+
 	public void setGameTimeInMinutes(Interval gameTimeInMinutes) {
 		this.gameTimeInMinutes = gameTimeInMinutes;
 	}
+
 	public Interval getPlayerCount() {
 		return playerCount;
 	}
+
 	public void setPlayerCount(Interval playerCount) {
 		this.playerCount = playerCount;
 	}
+
 	public Price getPrice() {
 		return price;
 	}
+
 	public void setPrice(Price price) {
 		this.price = price;
 	}
+
 	public Price getSalePrice() {
 		return salePrice;
 	}
+
 	public void setSalePrice(Price salePrice) {
 		this.salePrice = salePrice;
 	}
+
 	public List<String> getCategories() {
 		return categories;
 	}
+
 	public void setCategories(List<String> categories) {
 		this.categories = categories;
 	}
+
 	public List<String> getStyles() {
 		return styles;
 	}
+
 	public void setStyles(List<String> styles) {
 		this.styles = styles;
 	}
+
 	public List<CommunityAward> getCommunityAwards() {
 		return communityAwards;
 	}
+
 	public void setCommunityAwards(List<CommunityAward> communityAwards) {
 		this.communityAwards = communityAwards;
 	}
-	
-	
 
+	@Override
+	public String toString() {
+		return "Game [uri=" + uri + ", title=" + title + ", publisher=" + publisher + ", theme=" + theme + ", averageRating="
+				+ averageRating + ", arrivalDateInDays=" + arrivalDateInDays + ", shortDescription=" + shortDescription
+				+ ", detailedDescription=" + detailedDescription + ", suggestedAgeGroup=" + suggestedAgeGroup + ", gameTimeInMinutes="
+				+ gameTimeInMinutes + ", playerCount=" + playerCount + ", price=" + price + ", salePrice=" + salePrice + ", categories="
+				+ categories + ", styles=" + styles + ", communityAwards=" + communityAwards + "]";
+	}
 }

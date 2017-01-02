@@ -1,7 +1,12 @@
 package hu.tibor.salagvardi.assignments.xml2.gemklub.parser.util;
 
+import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.StringWriter;
+import java.io.Writer;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
@@ -28,6 +33,17 @@ public class JAXBUtil {
 			throw e;
 		}
 	}
+	
+	
+	public static <T> String toXML(T t) throws JAXBException {
+		JAXBContext context = JAXBContext.newInstance(t.getClass());
+		Marshaller marshaller = context.createMarshaller();
+		marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
+		marshaller.setProperty(Marshaller.JAXB_ENCODING, "UTF-8");	
+		Writer writer = new StringWriter();
+		marshaller.marshal(t, writer);
+		return writer.toString();
+	}
 
 	/**
 	 * Deserializes an object from XML.
@@ -46,5 +62,13 @@ public class JAXBUtil {
 			throw e;
 		}
 	}
-
+	
+	public static <T> T fromXML(Class<T> clazz, String xml) throws JAXBException {
+		return fromXML(clazz, xml, StandardCharsets.UTF_8);
+	}
+	
+	public static <T> T fromXML(Class<T> clazz, String xml, Charset charset) throws JAXBException {
+		InputStream is = new ByteArrayInputStream(xml.getBytes(charset));
+		return fromXML(clazz, is);
+	}
 }
