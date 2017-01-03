@@ -9,30 +9,37 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Interval {
 	@XmlAttribute
-	private int lowerBound;
+	private Integer lowerBound;
 	@XmlAttribute
-	private int upperBound;
+	private Integer upperBound;
 	
 	public Interval(){
 		super();
 	}
-	
-	public Interval(int lowerBound, int upperBound) {
+
+	public Interval(Integer lowerBound, Integer upperBound) {
 		super();
 		this.lowerBound = lowerBound;
 		this.upperBound = upperBound;
 	}
-	public int getLowerBound() {
+
+	public Integer getLowerBound() {
 		return lowerBound;
 	}
-	public void setLowerBound(int lowerBound) {
+
+	public void setLowerBound(Integer lowerBound) {
 		this.lowerBound = lowerBound;
 	}
-	public int getUpperBound() {
+
+	public Integer getUpperBound() {
 		return upperBound;
 	}
-	public void setUpperBound(int upperBound) {
+
+	public void setUpperBound(Integer upperBound) {
 		this.upperBound = upperBound;
 	}
+	
+	
+	
 	
 }

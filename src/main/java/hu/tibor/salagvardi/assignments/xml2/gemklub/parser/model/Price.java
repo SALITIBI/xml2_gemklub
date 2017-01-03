@@ -3,7 +3,6 @@ package hu.tibor.salagvardi.assignments.xml2.gemklub.parser.model;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlValue;
 
@@ -11,29 +10,35 @@ import javax.xml.bind.annotation.XmlValue;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Price {
 	@XmlValue
-	private double value;
+	private Double value;
 	@XmlAttribute
 	private String currency;
 	
 	public Price() {
 	}
-	
-	public Price(double value, String currency) {
+
+	public Price(Double value, String currency) {
 		super();
 		this.value = value;
 		this.currency = currency;
 	}
-	public double getValue() {
+
+	public Double getValue() {
 		return value;
 	}
-	public void setValue(double value) {
+
+	public void setValue(Double value) {
 		this.value = value;
 	}
+
 	public String getCurrency() {
 		return currency;
 	}
+
 	public void setCurrency(String currency) {
 		this.currency = currency;
 	}
+	
+	
 	
 }

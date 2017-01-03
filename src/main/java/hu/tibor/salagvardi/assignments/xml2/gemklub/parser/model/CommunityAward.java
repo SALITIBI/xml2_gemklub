@@ -10,14 +10,23 @@ import javax.xml.bind.annotation.XmlValue;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class CommunityAward {
 	@XmlAttribute
-	private int count;
+	private Integer count;
 	@XmlValue
 	private String title;
 	
-	public int getCount() {
+	public CommunityAward() {
+	
+	}
+	
+	public CommunityAward(Integer count, String title) {
+		super();
+		this.count = count;
+		this.title = title;
+	}
+	public Integer getCount() {
 		return count;
 	}
-	public void setCount(int count) {
+	public void setCount(Integer count) {
 		this.count = count;
 	}
 	public String getTitle() {
@@ -26,5 +35,6 @@ public class CommunityAward {
 	public void setTitle(String title) {
 		this.title = title;
 	}
+	
 	
 }
