@@ -16,30 +16,29 @@ import javax.xml.bind.Unmarshaller;
 public class JAXBUtil {
 
 	/**
-	 * Serializes an object to XML. The output document is written in UTF-8 encoding.
+	 * Serializes an object to XML. The output document is written in UTF-8
+	 * encoding.
 	 *
-	 * @param o the object to serialize
-	 * @param os the {@link OutputStream} to write to
-	 * @throws JAXBException on any error
+	 * @param o
+	 *            the object to serialize
+	 * @param os
+	 *            the {@link OutputStream} to write to
+	 * @throws JAXBException
+	 *             on any error
 	 */
 	public static void toXML(Object o, OutputStream os) throws JAXBException {
-		try {
-			JAXBContext	context = JAXBContext.newInstance(o.getClass());
-			Marshaller	marshaller = context.createMarshaller();
-			marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
-			marshaller.setProperty(Marshaller.JAXB_ENCODING, "UTF-8");
-			marshaller.marshal(o, os);
-		} catch(JAXBException e) {
-			throw e;
-		}
+		JAXBContext context = JAXBContext.newInstance(o.getClass());
+		Marshaller marshaller = context.createMarshaller();
+		marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
+		marshaller.setProperty(Marshaller.JAXB_ENCODING, "UTF-8");
+		marshaller.marshal(o, os);
 	}
-	
-	
+
 	public static <T> String toXML(T t) throws JAXBException {
 		JAXBContext context = JAXBContext.newInstance(t.getClass());
 		Marshaller marshaller = context.createMarshaller();
 		marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
-		marshaller.setProperty(Marshaller.JAXB_ENCODING, "UTF-8");	
+		marshaller.setProperty(Marshaller.JAXB_ENCODING, "UTF-8");
 		Writer writer = new StringWriter();
 		marshaller.marshal(t, writer);
 		return writer.toString();
@@ -48,25 +47,25 @@ public class JAXBUtil {
 	/**
 	 * Deserializes an object from XML.
 	 *
-	 * @param clazz the class of the object
-	 * @param is the {@link InputStream} to read from
+	 * @param clazz
+	 *            the class of the object
+	 * @param is
+	 *            the {@link InputStream} to read from
 	 * @return the resulting object
-	 * @throws JAXBException on any error
+	 * @throws JAXBException
+	 *             on any error
 	 */
 	public static <T> T fromXML(Class<T> clazz, InputStream is) throws JAXBException {
-		try {
-			JAXBContext	context = JAXBContext.newInstance(clazz);
-			Unmarshaller	unmarshaller = context.createUnmarshaller();
-			return (T) unmarshaller.unmarshal(is);
-		} catch(JAXBException e) {
-			throw e;
-		}
+		JAXBContext context = JAXBContext.newInstance(clazz);
+		Unmarshaller unmarshaller = context.createUnmarshaller();
+		return (T) unmarshaller.unmarshal(is);
+
 	}
-	
+
 	public static <T> T fromXML(Class<T> clazz, String xml) throws JAXBException {
 		return fromXML(clazz, xml, StandardCharsets.UTF_8);
 	}
-	
+
 	public static <T> T fromXML(Class<T> clazz, String xml, Charset charset) throws JAXBException {
 		InputStream is = new ByteArrayInputStream(xml.getBytes(charset));
 		return fromXML(clazz, is);
