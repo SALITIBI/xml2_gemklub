@@ -59,8 +59,15 @@ public class GameSearch {
 		}
 		
 	}
+	public List<SearchResultItem> getSearchResults() {
+		return searchResults;
+	}
+
 	public static void main (String[] args) throws IOException{
 		GameSearch gs = new GameSearch();
 		gs.doSearch("a", Category.GIFT);
+		for (SearchResultItem result : gs.getSearchResults()) {
+			System.out.println(result);
+		}
 	}
 }

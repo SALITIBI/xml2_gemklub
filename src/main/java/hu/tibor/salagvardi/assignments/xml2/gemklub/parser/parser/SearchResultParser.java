@@ -26,7 +26,6 @@ public class SearchResultParser {
 		Element shipping = element.select("div.product-icons > ul.icon-list > li").first();
 		Integer arrivalDateInDays = ParserHelper.extractArrivalDateInDays(shipping.select("span").first().attr("title"));
 		searchResultItem.setArrivalInDays(arrivalDateInDays);
-		System.out.println(searchResultItem);
 		return searchResultItem;
 	}
 
