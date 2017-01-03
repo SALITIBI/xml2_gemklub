@@ -2,11 +2,14 @@ package hu.tibor.salagvardi.assignments.xml2.gemklub.parser.xml;
 
 import static org.junit.Assert.*;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.xml.bind.JAXBException;
 
+import org.apache.commons.io.IOUtils;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -24,7 +27,7 @@ public class TestGameToXML {
 		
 	}
 	@Test
-	public void test() throws JAXBException {
+	public void test1() throws JAXBException, IOException {
 		game.setUri("uri");
 		game.setTitle("Star Wars");
 		game.setTheme("Scifi");
@@ -34,8 +37,8 @@ public class TestGameToXML {
 		game.setStyles(styles);
 		game.setShortDescription("This is a short description.");
 		game.setDetailedDescription("This is a more detailed description.");
-		game.setPrice(new Price(5000,"HUF"));
-		game.setSalePrice(new Price(4999,"HUF"));
+		game.setPrice(new Price(new Double(5000),"HUF"));
+		game.setSalePrice(new Price(new Double(4999),"HUF"));
 		List<CommunityAward> communityAwards = new ArrayList<>();
 		CommunityAward communityAward1 = new CommunityAward();
 		communityAward1.setCount(5);
@@ -51,13 +54,17 @@ public class TestGameToXML {
 		categories.add("Category no.1");
 		categories.add("Category no.2");
 		game.setCategories(categories);
-		game.setAverageRating(4);
+		game.setAverageRating(new Double(4));
 		game.setArrivalDateInDays(3);
 		game.setPlayerCount(new Interval(4,6));
 		game.setSuggestedAgeGroup(new Interval(3,99));
 		game.setGameTimeInMinutes(new Interval(30,50));
-		
-		JAXBUtil.toXML(game, System.out);
+		InputStream expectedStream = this.getClass().getClassLoader().getResourceAsStream("GameToXMLtest1.xml");
+		String expected = IOUtils.toString(expectedStream,"UTF-8");
+		String actual = JAXBUtil.toXML(game);
+		System.out.println(expected);
+		System.out.println(actual);
+		assertEquals(expected, actual);
 	}
 
 }
