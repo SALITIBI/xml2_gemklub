@@ -16,82 +16,71 @@ import org.jsoup.select.Elements;
 import hu.tibor.salagvardi.assignments.xml2.gemklub.parser.model.CommunityAward;
 import hu.tibor.salagvardi.assignments.xml2.gemklub.parser.model.Game;
 import hu.tibor.salagvardi.assignments.xml2.gemklub.parser.model.Interval;
-import hu.tibor.salagvardi.assignments.xml2.gemklub.parser.model.Price;
 import hu.tibor.salagvardi.assignments.xml2.gemklub.parser.util.JAXBUtil;
 
 public class GameParser {
+	private Game game;
+	
+	public GameParser() {
+		super();
+		game = new Game();
+	}
+
 	public Game parseGamePage(String uri) throws IOException {
 		Document gamePage = Jsoup.connect(uri).userAgent("Mozilla").get();
-		Game ret = parseGamePage(gamePage);
-		ret.setUri(uri);
-		return ret;
+		parseGamePage(gamePage);
+		game.setUri(uri);
+		return game;
 	}
 
-	private Game parseGamePage(Document gamePage) throws IOException{
-		Game ret = new Game();
-		ret.setTitle(extractTitle(gamePage));
-		ret.setTheme(extractTheme(gamePage));
-		ret.setSuggestedAgeGroup(extractSuggestedAgeGroup(gamePage));
-		ret.setStyles(extractStyles(gamePage));
-		ret.setShortDescription(extractShortDescription(gamePage));
-		ret.setSalePrice(extractSalePrice(gamePage));
-		ret.setPublisher(extractPublisher(gamePage));
-		ret.setPrice(extractRealPrice(gamePage));
-		ret.setPlayerCount(extractPlayerCount(gamePage));
-		ret.setGameTimeInMinutes(extractGameTimeInMinutes(gamePage));
-		ret.setDetailedDescription(extractDetailedDescription(gamePage));
-		ret.setCommunityAwards(extractCommunityAwards(gamePage));
-		ret.setCategories(extractCategories(gamePage));
-		ret.setAverageRating(extractAverageRating(gamePage));
-		ret.setArrivalDateInDays(extractArrivalDateInDays(gamePage));
-		return ret;
+	private void parseGamePage(Document gamePage) throws IOException{		
+		extractTitle(gamePage);
+		extractTheme(gamePage);
+		extractSuggestedAgeGroup(gamePage);
+		extractStyles(gamePage);
+		extractShortDescription(gamePage);
+		extractSalePrice(gamePage);
+		extractPublisher(gamePage);
+		extractRealPrice(gamePage);
+		extractPlayerCount(gamePage);
+		extractGameTimeInMinutes(gamePage);
+		extractDetailedDescription(gamePage);
+		extractCommunityAwards(gamePage);
+		extractCategories(gamePage);
+		extractAverageRating(gamePage);
+		extractArrivalDateInDays(gamePage);
 	}
 
-	private Integer extractArrivalDateInDays(Document doc) throws IOException {
+	private void extractArrivalDateInDays(Document doc) throws IOException {
 		String data = doc.select("div.product-informations > div.depo > a").first().text();
-
-		Pattern pattern = Pattern.compile(".*?(\\d+).*?");
-		Matcher matcher = pattern.matcher(data);
-		if (!matcher.matches()) {
-			throw new IOException("Malformed document");
-		}
-		return Integer.parseInt(matcher.group(1));
+		game.setArrivalDateInDays(ParserHelper.extractArrivalDateInDays(data));
 	}
 
-
-
-	private Double extractAverageRating(Document doc) throws IOException {
+	private void extractAverageRating(Document doc) throws IOException {
 		String data = doc.select("div.product-view > div.ratings > div.rating-stars > span.rating-average").first().text();
-		Pattern pattern = Pattern.compile("\\(([\\d\\.]+?)\\)");
-		Matcher matcher = pattern.matcher(data);
-		if (!matcher.matches()) {
-			throw new IOException("Malformed document");
-		}
-		return Double.parseDouble(matcher.group(1));
+		game.setAverageRating(ParserHelper.extractAverageRating(data));
 	}
 
-
-
-	private List<CommunityAward> extractCommunityAwards(Document doc) {
-		List<CommunityAward> ret = null;
+	private void extractCommunityAwards(Document doc) {
+		List<CommunityAward> communityAwards = null;
 		Elements communityAwardsElements = doc.select("div.advancedreviews-total-block > div.communtiy-awards > span.award");
 		if(communityAwardsElements!= null && communityAwardsElements.size()!= 0){
-			ret = new ArrayList<>();
+			communityAwards = new ArrayList<>();
 			for (Element awardElement : communityAwardsElements) {
 				String awardTitle = awardElement.select("span.award-label").first().text();
 				Integer awardCount = Integer.parseInt(awardElement.select("span.award-count").first().text());
-				ret.add(new CommunityAward(awardCount, awardTitle));
+				communityAwards.add(new CommunityAward(awardCount, awardTitle));
 			}
 		}
-		return ret;
+		game.setCommunityAwards(communityAwards);
 	}
 
-	private String extractDetailedDescription(Document doc) {
-		return doc.select("div.description>div.std").text().trim();
+	private void extractDetailedDescription(Document doc) {
+		game.setDetailedDescription(doc.select("div.description>div.std").text().trim());
 	}
 
-	private Interval extractGameTimeInMinutes(Document doc) throws IOException {
-		Interval ret = null;
+	private void extractGameTimeInMinutes(Document doc) throws IOException {
+		Interval gameTimeInMinutes = null;
 		Elements labels = doc.select("div.product-informations>ul>li>span.label1");
 		String data = null;
 		for (Element label : labels) {
@@ -107,14 +96,14 @@ public class GameParser {
 				throw new IOException("Malformed document");
 			}
 			
-			ret = extractInterval(matcher.group(1));
+			gameTimeInMinutes = extractInterval(matcher.group(1));
 		}
 		
-		return ret;
+		game.setGameTimeInMinutes(gameTimeInMinutes);
 	}
 
-	private Interval extractPlayerCount(Document doc) throws IOException {
-		Interval ret = null;
+	private void extractPlayerCount(Document doc) throws IOException {
+		Interval playerCount = null;
 		Elements labels = doc.select("div.product-informations>ul>li>span.label1");
 		String data = null;
 		for (Element label : labels) {
@@ -124,12 +113,12 @@ public class GameParser {
 			}
 		}
 		if (data != null) {
-			ret = extractInterval(data);
+			playerCount = extractInterval(data);
 		}
-		return ret;
+		game.setPlayerCount(playerCount);
 	}
 
-	private String extractPublisher(Document doc) {
+	private void extractPublisher(Document doc) {
 		Elements labels = doc.select("div.product-informations>ul>li>span.label2");
 		String data = null;
 		for (Element label : labels) {
@@ -138,39 +127,24 @@ public class GameParser {
 				break;
 			}
 		}
-		return data;
+		game.setPublisher(data);
 	}
-	private Price extractRealPrice(Document doc) throws IOException{
+	private void extractRealPrice(Document doc) throws IOException{
 		String data = doc.select("div.price-info > div.price-box > p.old-price > span.price").text();
-		return extractPrice(data);
+		game.setPrice(ParserHelper.extractPrice(data));
 	}
-	private Price extractPrice(String data) throws IOException {
-		Pattern pattern = Pattern.compile("([\\d\\s\\xA0]+)[\\s\\xA0](Ft)");
-		Matcher matcher = pattern.matcher(data);
-		if (!matcher.matches()) {
-			throw new IOException("Malformed document");
-		}
-		return new Price(extractPriceValue(matcher.group(1)), matcher.group(2));
-	}
-
-	private Price extractSalePrice(Document doc) throws IOException {
+	
+	private void extractSalePrice(Document doc) throws IOException {
 		String data = doc.select("div.price-info > div.price-box > p.special-price-8 > span.price").text();
-		return extractPrice(data);
+		game.setSalePrice( ParserHelper.extractPrice(data));
 	}
 	
-	private Double extractPriceValue(String data){
-		Pattern nonBreakableSpace = Pattern.compile("\\xA0");
-		Matcher matcher2 = nonBreakableSpace.matcher(data);
-		String value = matcher2.replaceAll("");
-		return new Double(Double.parseDouble(value));
-	}
-	
-	private String extractShortDescription(Document doc) {
-		return doc.select("div.short-description>div.std").text().trim();
+	private void extractShortDescription(Document doc) {
+		game.setShortDescription(doc.select("div.short-description>div.std").text().trim());
 	}
 
-	private List<String> extractStyles(Document doc) {
-		List<String> ret = null;
+	private void extractStyles(Document doc) {
+		List<String> stlyes = null;
 		Elements labels = doc.select("div.product-informations>ul>li>span.label2");
 		Elements styleElements = null;
 		for (Element label : labels) {
@@ -180,17 +154,17 @@ public class GameParser {
 			}
 		}
 		if (styleElements != null && styleElements.size() != 0) {
-			ret = new ArrayList<>();
+			stlyes = new ArrayList<>();
 			for (Element styleElement : styleElements) {
-				ret.add(styleElement.text().trim());
+				stlyes.add(styleElement.text().trim());
 			}
 		}
 
-		return ret;
+		game.setStyles(stlyes);
 	}
 	
-	private List<String> extractCategories(Document doc) {
-		List<String> ret = null;
+	private void extractCategories(Document doc) {
+		List<String> categories = null;
 		Elements labels = doc.select("div.product-informations>ul>li>span.label2");
 		Elements styleElements = null;
 		for (Element label : labels) {
@@ -200,17 +174,17 @@ public class GameParser {
 			}
 		}
 		if (styleElements != null && styleElements.size() != 0) {
-			ret = new ArrayList<>();
+			categories = new ArrayList<>();
 			for (Element styleElement : styleElements) {
-				ret.add(styleElement.text().trim());
+				categories.add(styleElement.text().trim());
 			}
 		}
 
-		return ret;
+		game.setCategories(categories);
 	}
 
-	private Interval extractSuggestedAgeGroup(Document doc) throws IOException {
-		Interval ret = null;
+	private void extractSuggestedAgeGroup(Document doc) throws IOException {
+		Interval suggestedAgeGroup = null;
 		String data = null;
 		Elements labels = doc.select("div.product-informations>ul>li>span.label1");
 		for (Element label : labels) {
@@ -221,13 +195,17 @@ public class GameParser {
 		}
 
 		if (data != null) {
-			ret = extractInterval(data);
+			suggestedAgeGroup = extractInterval(data);
 		}
 
-		return ret;
+		game.setSuggestedAgeGroup(suggestedAgeGroup);
 	}
-
-	private String extractTheme(Document doc) {
+	
+	private void extractTitle(Document doc) {
+		game.setTitle(doc.select("div.product-name > h1").first().text().trim());
+	}
+	
+	private void extractTheme(Document doc) {
 		String ret = null;
 		Elements labels = doc.select("div.product-informations>ul>li>span.label2");
 
@@ -237,8 +215,9 @@ public class GameParser {
 				break;
 			}
 		}
-		return ret;
+		game.setTheme(ret);
 	}
+	
 	private Interval extractInterval(String data) throws IOException{
 		Pattern pattern = Pattern.compile("(\\d+)\\s*-\\s*(\\d+)");
 		Matcher matcher = pattern.matcher(data);
@@ -246,12 +225,8 @@ public class GameParser {
 			throw new IOException("Malformed document");
 		}
 		return new Interval(Integer.parseInt(matcher.group(1)), Integer.parseInt(matcher.group(2)));
-
 	}
-	private String extractTitle(Document doc) {
-		return doc.select("div.product-name > h1").first().text().trim();
-	}
-
+	
 	public static void main(String[] args) throws IOException, JAXBException {
 		GameParser gp = new GameParser();
 		System.out.println(JAXBUtil.toXML(gp.parseGamePage(
