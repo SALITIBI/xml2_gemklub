@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import hu.tibor.salagvardi.assignments.xml2.gemklub.parser.model.Interval;
 import hu.tibor.salagvardi.assignments.xml2.gemklub.parser.model.Price;
 
 class ParserHelper {
@@ -37,5 +38,14 @@ class ParserHelper {
 			return null;
 		}
 		return Integer.parseInt(matcher.group(1));
+	}
+	static Interval extractInterval(String data) throws IOException{
+		Pattern pattern = Pattern.compile("(\\d+)\\s*-\\s*(\\d+)");
+		Matcher matcher = pattern.matcher(data);
+		if (!matcher.matches()) {
+			
+			 return new Interval(Integer.parseInt(data), Integer.parseInt(data));
+		}
+		return new Interval(Integer.parseInt(matcher.group(1)), Integer.parseInt(matcher.group(2)));
 	}
 }

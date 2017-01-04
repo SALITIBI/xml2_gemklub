@@ -1,4 +1,4 @@
-package hu.tibor.salagvardi.assignments.xml2.gemklub.main;
+package hu.tibor.salagvardi.assignments.xml2.gemklub.parser.parser;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -9,9 +9,8 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
+import hu.tibor.salagvardi.assignments.xml2.gemklub.parser.model.Category;
 import hu.tibor.salagvardi.assignments.xml2.gemklub.parser.model.SearchResultItem;
-import hu.tibor.salagvardi.assignments.xml2.gemklub.parser.parser.Category;
-import hu.tibor.salagvardi.assignments.xml2.gemklub.parser.parser.SearchResultParser;
 
 public class GameSearch {
 	private static final int TIMEOUT_IN_SECONDS = 60000;
@@ -32,8 +31,8 @@ public class GameSearch {
 		this.searchResults = new ArrayList<>();
 	}
 	
-	public void doSearch(String name, Category category) throws IOException{
-		doSearch(URI, name, category, limit);
+	public List<SearchResultItem> doSearch(String keyword, Category category) throws IOException{
+		return doSearch(URI, keyword, category, limit);
 	}
 	public Integer getLimit() {
 		return limit;
@@ -41,8 +40,8 @@ public class GameSearch {
 	public void setLimit(Integer limit) {
 		this.limit = limit;
 	}
-	private void doSearch(String uri,String name, Category category, int remainingItems) throws IOException{
-		Document doc = Jsoup.connect(uri).userAgent("Mozilla").timeout(TIMEOUT_IN_SECONDS).data("cat",String.valueOf(category.getUriCode()),"q",name).get();
+	private List<SearchResultItem> doSearch(String uri,String keyword, Category category, int remainingItems) throws IOException{
+		Document doc = Jsoup.connect(uri).userAgent("Mozilla").timeout(TIMEOUT_IN_SECONDS).data("cat",String.valueOf(category.getUriCode()),"q",keyword).get();
 		Elements productItemElements = doc.select("div.amshopby-page-container>div.category-products>div.row>div >div.product-item");
 		int itemCount = productItemElements.size();
 		Element toolbar = doc.select("div.toolbar > div.pages > ol > li > a.next").first();
@@ -54,10 +53,10 @@ public class GameSearch {
 		if(toolbar != null){
 			String nextPageURI = toolbar.attr("href");
 			if(remainingItems-itemCount > 0){
-				doSearch(nextPageURI, name, category,remainingItems - itemCount);
+				doSearch(nextPageURI, keyword, category,remainingItems - itemCount);
 			}
 		}
-		
+		return searchResults;
 	}
 	public List<SearchResultItem> getSearchResults() {
 		return searchResults;

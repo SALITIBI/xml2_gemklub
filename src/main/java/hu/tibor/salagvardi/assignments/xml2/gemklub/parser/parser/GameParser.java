@@ -96,7 +96,7 @@ public class GameParser {
 				throw new IOException("Malformed document");
 			}
 			
-			gameTimeInMinutes = extractInterval(matcher.group(1));
+			gameTimeInMinutes = ParserHelper.extractInterval(matcher.group(1));
 		}
 		
 		game.setGameTimeInMinutes(gameTimeInMinutes);
@@ -113,7 +113,7 @@ public class GameParser {
 			}
 		}
 		if (data != null) {
-			playerCount = extractInterval(data);
+			playerCount = ParserHelper.extractInterval(data);
 		}
 		game.setPlayerCount(playerCount);
 	}
@@ -195,7 +195,7 @@ public class GameParser {
 		}
 
 		if (data != null) {
-			suggestedAgeGroup = extractInterval(data);
+			suggestedAgeGroup = ParserHelper.extractInterval(data);
 		}
 
 		game.setSuggestedAgeGroup(suggestedAgeGroup);
@@ -218,15 +218,10 @@ public class GameParser {
 		game.setTheme(ret);
 	}
 	
-	private Interval extractInterval(String data) throws IOException{
-		Pattern pattern = Pattern.compile("(\\d+)\\s*-\\s*(\\d+)");
-		Matcher matcher = pattern.matcher(data);
-		if (!matcher.matches()) {
-			throw new IOException("Malformed document");
-		}
-		return new Interval(Integer.parseInt(matcher.group(1)), Integer.parseInt(matcher.group(2)));
+	public Game getGame() {
+		return game;
 	}
-	
+
 	public static void main(String[] args) throws IOException, JAXBException {
 		GameParser gp = new GameParser();
 		System.out.println(JAXBUtil.toXML(gp.parseGamePage(

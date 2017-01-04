@@ -50,6 +50,24 @@
 			<artifactId>commons-io</artifactId>
 			<version>2.5</version>
 		</dependency>
+		<dependency>
+			<groupId>org.restlet.jse</groupId>
+			<artifactId>org.restlet</artifactId>
+			<version>2.3.7</version>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.restlet.jse</groupId>
+			<artifactId>org.restlet.ext.jaxb</artifactId>
+			<version>2.3.7</version>
+			<scope>runtime</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.restlet.jse</groupId>
+			<artifactId>org.restlet.ext.gson</artifactId>
+			<version>2.3.7</version>
+			<scope>runtime</scope>
+		</dependency>
 	</dependencies>
 	<build>
 		<plugins>
@@ -72,13 +90,20 @@
 				</executions>
 				<configuration>
 					<sources>
-						<source>src/main/java/hu/unideb/inf/bd/model/Book.java</source>
-						<source>src/main/java/hu/unideb/inf/bd/model/SearchResultItem.java</source>
-						<source>src/main/java/hu/unideb/inf/bd/model/SearchResults.java</source>
+						<source>src/main/java/hu/tibor/salagvardi/assignments/xml2/gemklub/parser/model/CommunityAward.java</source>
+						<source>src/main/java/hu/tibor/salagvardi/assignments/xml2/gemklub/parser/model/Game.java</source>
+						<source>src/main/java/hu/tibor/salagvardi/assignments/xml2/gemklub/parser/model/Interval.java</source>
+						<source>src/main/java/hu/tibor/salagvardi/assignments/xml2/gemklub/parser/model/Price.java</source>
+						<source>src/main/java/hu/tibor/salagvardi/assignments/xml2/gemklub/parser/model/SearchResultItem.java</source>
 					</sources>
 				</configuration>
 			</plugin>
 		</plugins>
 	</build>
-
+	<repositories>
+		<repository>
+			<id>maven-restlet</id>
+			<url>http://maven.restlet.org/</url>
+		</repository>
+	</repositories>
 </project>
