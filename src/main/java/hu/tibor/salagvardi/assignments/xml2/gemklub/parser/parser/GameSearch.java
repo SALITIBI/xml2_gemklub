@@ -43,10 +43,10 @@ public class GameSearch {
 	private List<SearchResultItem> doSearch(String uri,String keyword, Category category, int remainingItems) throws IOException{
 		Document doc = Jsoup.connect(uri).userAgent("Mozilla").timeout(TIMEOUT_IN_SECONDS).data("cat",String.valueOf(category.getUriCode()),"q",keyword).get();
 		Elements productItemElements = doc.select("div.amshopby-page-container>div.category-products>div.row>div >div.product-item");
-		int itemCount = productItemElements.size();
 		Element toolbar = doc.select("div.toolbar > div.pages > ol > li > a.next").first();
-		
-		for (Element productItemElement : productItemElements) {
+		int itemCount;
+		for (itemCount = 0; itemCount < Math.min(productItemElements.size(), remainingItems); itemCount++) {
+			Element productItemElement = productItemElements.get(itemCount);
 			Element productInfo = productItemElement.select("div.product-info").first();
 			searchResults.add(new SearchResultParser().parseSearchResultItem(productInfo));
 		}
@@ -63,7 +63,7 @@ public class GameSearch {
 	}
 
 	public static void main (String[] args) throws IOException{
-		GameSearch gs = new GameSearch();
+		GameSearch gs = new GameSearch(26);
 		gs.doSearch("a", Category.GIFT);
 		for (SearchResultItem result : gs.getSearchResults()) {
 			System.out.println(result);
