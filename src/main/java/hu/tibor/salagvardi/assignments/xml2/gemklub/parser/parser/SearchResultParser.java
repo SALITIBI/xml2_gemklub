@@ -12,6 +12,8 @@ public class SearchResultParser {
 	public SearchResultParser() {
 		searchResultItem = new SearchResultItem();
 	}
+	
+	
 
 	public SearchResultItem parseSearchResultItem(Element element) throws IOException {
 		Price price = ParserHelper.extractPrice(element.select("p.normal-price > span > span.price").first().text());
@@ -20,6 +22,7 @@ public class SearchResultParser {
 		String title = titleAndURI.text();
 		String uri = titleAndURI.attr("href");
 		searchResultItem.setUri(uri);
+		searchResultItem.setGameId(ParserHelper.extractIdFromURI(uri));
 		searchResultItem.setTitle(title);
 		Double rating = ParserHelper.extractAverageRating(element.select("div.ratings > div.rating-stars > span.rating-average").first().text());
 		searchResultItem.setRating(rating);

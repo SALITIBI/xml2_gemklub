@@ -13,6 +13,8 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Game {
 	@XmlAttribute
+	private String gameId;
+	@XmlAttribute
 	private String uri;
 	@XmlElement
 	private String title;
@@ -47,7 +49,15 @@ public class Game {
 	@XmlElementWrapper(name = "communityAwards")
 	@XmlElement(name = "communityAward")
 	private List<CommunityAward> communityAwards;
-	
+
+	public String getGameId() {
+		return gameId;
+	}
+
+	public void setGameId(String gameId) {
+		this.gameId = gameId;
+	}
+
 	public String getUri() {
 		return uri;
 	}
@@ -178,10 +188,12 @@ public class Game {
 
 	@Override
 	public String toString() {
-		return "Game [uri=" + uri + ", title=" + title + ", publisher=" + publisher + ", theme=" + theme + ", averageRating="
-				+ averageRating + ", arrivalDateInDays=" + arrivalDateInDays + ", shortDescription=" + shortDescription
+		return "Game [gameId=" + gameId + ", uri=" + uri + ", title=" + title + ", publisher=" + publisher + ", theme=" + theme
+				+ ", averageRating=" + averageRating + ", arrivalDateInDays=" + arrivalDateInDays + ", shortDescription=" + shortDescription
 				+ ", detailedDescription=" + detailedDescription + ", suggestedAgeGroup=" + suggestedAgeGroup + ", gameTimeInMinutes="
 				+ gameTimeInMinutes + ", playerCount=" + playerCount + ", price=" + price + ", salePrice=" + salePrice + ", categories="
 				+ categories + ", styles=" + styles + ", communityAwards=" + communityAwards + "]";
 	}
+
+	
 }

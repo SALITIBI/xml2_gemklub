@@ -63,7 +63,7 @@ public class GameSearch {
 	}
 
 	public static void main (String[] args) throws IOException{
-		GameSearch gs = new GameSearch(26);
+		GameSearch gs = new GameSearch(5);
 		gs.doSearch("a", Category.GIFT);
 		for (SearchResultItem result : gs.getSearchResults()) {
 			System.out.println(result);

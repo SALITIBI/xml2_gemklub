@@ -30,6 +30,7 @@ public class GameParser {
 		Document gamePage = Jsoup.connect(uri).userAgent("Mozilla").get();
 		parseGamePage(gamePage);
 		game.setUri(uri);
+		game.setGameId(ParserHelper.extractIdFromURI(uri));
 		return game;
 	}
 

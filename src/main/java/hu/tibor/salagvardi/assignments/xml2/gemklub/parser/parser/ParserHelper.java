@@ -48,4 +48,7 @@ class ParserHelper {
 		}
 		return new Interval(Integer.parseInt(matcher.group(1)), Integer.parseInt(matcher.group(2)));
 	}
+	static String extractIdFromURI(String uri){
+		return uri.split("/")[3].split(".html")[0];
+	}
 }

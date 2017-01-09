@@ -1,8 +1,7 @@
 package hu.tibor.salagvardi.assignments.xml2.gemklub.parser.main;
 
-import java.io.IOException;
-
 import org.restlet.resource.Get;
+import org.restlet.resource.ResourceException;
 import org.restlet.resource.ServerResource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,12 +16,14 @@ public class GameResource extends ServerResource{
 	public Game represent(){
 		String gameTitle = getAttribute("gametitle");
 		Game game = null;
-		GameParser gameParser = new GameParser();
+		
 		try {
+			GameParser gameParser = new GameParser();
 			String uri = "http://www.gemklub.hu/"+ gameTitle + ".html";
 			game = gameParser.parseGamePage(uri);
-		} catch (IOException e) {
+		} catch (Exception e) {
 			logger.error("{} cause: {}",e.getMessage(),e.getCause());
+			throw new ResourceException(404);
 		}
 		
 		return game;

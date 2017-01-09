@@ -1,6 +1,5 @@
 package hu.tibor.salagvardi.assignments.xml2.gemklub.parser.main;
 
-import java.io.IOException;
 
 import org.restlet.data.Status;
 import org.restlet.resource.Get;
@@ -18,21 +17,30 @@ public class SearchResultsResource extends ServerResource{
 	@Get("xml|json")
 	public SearchResults represent(){
 		
-		Category category = Category.valueOf(getQueryValue("category"));
-		String keyword = getQueryValue("keyword");
 		
-		
-		if (category == null || keyword == null) {
-			throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST, "Required parameter(s) 'keyword' and/or 'category' is missing");
-		}
 		SearchResults searchResults = new SearchResults();
-		searchResults.setCategory(category);
-		searchResults.setKeyword(keyword);
-		GameSearch gameSearch = new GameSearch();
 		try {
+			Category category = Category.valueOf(getQueryValue("category"));
+			String keyword = getQueryValue("keyword");
+			String limitParameter = getQueryValue("limit");
+			
+			
+			if (category == null || keyword == null) {
+				throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST, "Required parameter(s) 'keyword' and/or 'category' is missing");
+			}
+			searchResults.setCategory(category);
+			searchResults.setKeyword(keyword);
+			GameSearch gameSearch = null;
+			if(limitParameter!=null){
+				int limit = Integer.parseInt(limitParameter);
+				gameSearch = new GameSearch(limit);
+			}else{
+				gameSearch = new GameSearch();
+			}
 			searchResults.setSearchResultItems(gameSearch.doSearch(keyword, category));
-		} catch (IOException e) {
+		} catch (Exception e) {
 			logger.error("{} cause: {}",e.getMessage(),e.getCause());
+			throw new ResourceException(404);
 		}
 		return searchResults;
 	}

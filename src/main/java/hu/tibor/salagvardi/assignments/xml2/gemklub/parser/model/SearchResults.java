@@ -43,5 +43,4 @@ public class SearchResults {
 		return "SearchResults [searchResultItems=" + searchResultItems + ", category=" + category + ", keyword=" + keyword + "]";
 	}
 	
-	
 }
