@@ -12,7 +12,7 @@ public class GemklubApplication extends Application {
 	public Restlet createInboundRoot() {
 		Router	router = new Router(getContext());
 		router.setDefaultMatchingQuery(true);
-		router.attach("/game/{gameuri}", GameResource.class);
+		router.attach("/game/{gametitle}", GameResource.class);
 		router.attach("/search?{query}", SearchResultsResource.class);
 		return router;
 	}
